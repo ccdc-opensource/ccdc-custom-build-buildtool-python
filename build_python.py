@@ -5,8 +5,8 @@ import sys
 import os
 from pathlib import Path
 
-package_name = 'python'
-python_version = '3.7.7'
+package_name = 'bt_python'
+python_version = '3.8.2'
 macos_deployment_target = '10.12'
 
 def macos():
@@ -51,9 +51,9 @@ def output_base_name():
 
 def python_destdir():
     if windows():
-        return Path('D:\\x_mirror\\buildman\\tools\\Python')
+        return Path('D:\\x_mirror\\buildman\\tools\\bt_python')
     else:
-        return Path('/opt/ccdc/third-party/python')
+        return Path('/opt/ccdc/third-party/bt_python')
 
 def python_version_destdir():
     return python_destdir() / output_base_name()
@@ -74,11 +74,11 @@ def install_from_msi():
         with urllib.request.urlopen(url) as response:
             with open(localfile, 'wb') as final_file:
                 shutil.copyfileobj(response, final_file)
-        subprocess.run(f'{localfile} /quiet InstallAllUsers=0 Include_launcher=0 Include_doc=0 Include_debug=1 Include_symbols=1 Shortcuts=0 Include_test=0 CompileAll=1 TargetDir="{python_version_destdir()}" SimpleInstallDescription="Just for me, no test suite."', shell=True, check=True)
+        subprocess.run(f'{localfile} /quiet InstallAllUsers=0 Include_launcher=0 Include_doc=0 Include_debug=0 Include_symbols=0 Shortcuts=0 Include_test=0 CompileAll=1 TargetDir="{python_version_destdir()}" SimpleInstallDescription="Just for buildtool."', shell=True, check=True)
 
 def install_prerequisites():
     if macos():
-        subprocess.run(['brew', 'install', 'openssl', 'readline', 'sqlite3', 'xz', 'zlib', 'tcl-tk'], check=True)
+        subprocess.run(['brew', 'install', 'openssl', 'readline', 'sqlite3', 'xz', 'zlib'], check=True)
     if linux():
         if centos():
             subprocess.run('sudo yum update -y', shell=True, check=True)
@@ -86,7 +86,7 @@ def install_prerequisites():
         if ubuntu():
             subprocess.run('sudo apt-get -y update', shell=True, check=True)
             subprocess.run('sudo apt-get -y dist-upgrade', shell=True, check=True)
-            subprocess.run('sudo apt-get -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev', shell=True, check=True)
+            subprocess.run('sudo apt-get -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev', shell=True, check=True)
 
 def install_pyenv():
     if macos():
@@ -98,11 +98,8 @@ def install_pyenv():
 def install_pyenv_version(version):
     python_build_env = dict(os.environ)
     if macos():
-        python_build_env['PATH']=f"/usr/local/opt/tcl-tk/bin:{python_build_env['PATH']}"
-        python_build_env['LDFLAGS']=f"-L/usr/local/opt/tcl-tk/lib -mmacosx-version-min={macos_deployment_target}"
-        python_build_env['CPPFLAGS']=f"-I/usr/local/opt/tcl-tk/include -mmacosx-version-min={macos_deployment_target}"
-        python_build_env['PKG_CONFIG_PATH']="/usr/local/opt/tcl-tk/lib/pkgconfig"
-        python_build_env['PYTHON_CONFIGURE_OPTS']="--with-tcltk-includes='-I/usr/local/opt/tcl-tk/include' --with-tcltk-libs='-L/usr/local/opt/tcl-tk/lib -ltcl8.6 -ltk8.6'"
+        python_build_env['LDFLAGS']=f"-mmacosx-version-min={macos_deployment_target}"
+        python_build_env['CPPFLAGS']=f"-mmacosx-version-min={macos_deployment_target}"
     if linux():
         python_build_env['PATH']=f"/tmp/pyenvinst/plugins/python-build/bin:{python_build_env['PATH']}"
         
@@ -110,6 +107,24 @@ def install_pyenv_version(version):
         
 def output_archive_filename():
         return f'{output_base_name()}.tar.gz'
+
+def install_packages():
+    packages = [
+        'pip',
+        'Jinja2', # To generate code and cmakelists files
+        'pyyaml', # To read configuration
+        'requests', # To fetch stuff and query services
+        'macholib', # To handle macos libraries better
+        'dmgbuild', # To build pretty dmgs
+        'argcomplete', # autocompletion for proper shells
+        'colorama', # pretty colours
+    ]
+    if windows():
+        python_interpreter = python_version_destdir() / 'python.exe'
+        subprocess.run(f'{python_interpreter} -m pip install -U {" ".join(packages)}', shell=True, check=True)
+    else:
+        python_interpreter =  python_version_destdir() / 'bin' / 'python'
+        subprocess.run(f'sudo {python_interpreter} -m pip install -U {" ".join(packages)}', shell=True, check=True)
 
 def create_archive():
     if 'BUILD_ARTIFACTSTAGINGDIRECTORY' in os.environ:
@@ -143,6 +158,7 @@ def main():
         install_prerequisites()
         install_pyenv()
         install_pyenv_version(python_version)
+    install_packages()
     create_archive()
 
 if __name__ == "__main__":
