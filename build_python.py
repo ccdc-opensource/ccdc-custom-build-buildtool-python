@@ -103,7 +103,7 @@ def install_pyenv_version(version):
     if linux():
         python_build_env['PATH']=f"/tmp/pyenvinst/plugins/python-build/bin:{python_build_env['PATH']}"
         
-    subprocess.run(f'sudo python-build {version} {python_version_destdir()}', shell=True, check=True, env=python_build_env)
+    subprocess.run(f'sudo env "PATH=$PATH" python-build {version} {python_version_destdir()}', shell=True, check=True, env=python_build_env)
         
 def output_archive_filename():
         return f'{output_base_name()}.tar.gz'
