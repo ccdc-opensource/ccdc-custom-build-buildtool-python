@@ -21,7 +21,9 @@ jobs:
   pool:
     vmImage: 'ubuntu-18.04'
   steps:
-  # No need to setup specific python, the container's python3 will be used
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.8'
   - task: PythonScript@0
     inputs:
       scriptSource: 'filePath'
