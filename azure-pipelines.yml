@@ -1,38 +1,45 @@
 jobs:
-- job: Centos7
-  pool:
-    vmImage: 'ubuntu-latest'
-  # We use a container to run the build as we must be compatible with centos7's older glibc
-  container: rockdreamer/centos7-gcc9:latest
-  steps:
-  # No need to setup specific python, the container's python3 will be used
-  - template: common-tasks.yml
+  - job: Centos7
+    pool:
+      vmImage: "ubuntu-latest"
+    # We use a container to run the build as we must be compatible with centos7's older glibc
+    container: rockdreamer/centos7-gcc9:latest
+    variables:
+      artifactory.platformName: "centos7"
+    steps:
+      # No need to setup specific python, the container's python3 will be used
+      - template: common-tasks.yml
 
-- job: Ubuntu1804
-  pool:
-    vmImage: 'ubuntu-18.04'
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.8'
-  - template: common-tasks.yml
+  - job: Ubuntu1804
+    pool:
+      vmImage: "ubuntu-18.04"
+    variables:
+      artifactory.platformName: "ubuntu18.04"
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.8"
+      - template: common-tasks.yml
 
-- job: macOS
-  pool:
-    vmImage: 'macOS-latest'
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.8'
-  - template: common-tasks.yml
+  - job: macOS
+    pool:
+      vmImage: "macOS-latest"
+    variables:
+      artifactory.platformName: "darwin"
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.8"
+      - template: common-tasks.yml
 
-- job: WindowsVS2019
-  pool:
-    vmImage: 'windows-2019'
-  variables:
-    build_vs_version: '2019'  
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.8'
-  - template: common-tasks.yml
+  - job: WindowsVS2019
+    pool:
+      vmImage: "windows-2019"
+    variables:
+      build_vs_version: "2019"
+      artifactory.platformName: "windows"
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.8"
+      - template: common-tasks.yml
