@@ -6,16 +6,7 @@ jobs:
   container: rockdreamer/centos7-gcc9:latest
   steps:
   # No need to setup specific python, the container's python3 will be used
-  - task: PythonScript@0
-    inputs:
-      scriptSource: 'filePath'
-      scriptPath: build_python.py
-    displayName: 'install python'
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'python'
-      publishLocation: 'Container'
+  - template: common-tasks.yml
 
 - job: Ubuntu1804
   pool:
@@ -24,16 +15,7 @@ jobs:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.8'
-  - task: PythonScript@0
-    inputs:
-      scriptSource: 'filePath'
-      scriptPath: build_python.py
-    displayName: 'install python'
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'python'
-      publishLocation: 'Container'
+  - template: common-tasks.yml
 
 - job: macOS
   pool:
@@ -42,16 +24,7 @@ jobs:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.8'
-  - task: PythonScript@0
-    inputs:
-      scriptSource: 'filePath'
-      scriptPath: build_python.py
-    displayName: 'install python'
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'python'
-      publishLocation: 'Container'
+  - template: common-tasks.yml
 
 - job: WindowsVS2019
   pool:
@@ -62,13 +35,4 @@ jobs:
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '3.8'
-  - task: PythonScript@0
-    inputs:
-      scriptSource: 'filePath'
-      scriptPath: build_python.py
-    displayName: 'install python'
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'python'
-      publishLocation: 'Container'
+  - template: common-tasks.yml

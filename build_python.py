@@ -42,8 +42,8 @@ def output_base_name():
         package_name,
         python_version,
     ]
-    if 'BUILD_BUILDID' in os.environ:
-        components.append(os.environ['BUILD_BUILDID'])
+    if 'BUILD_BUILDNUMBER' in os.environ:
+        components.append(os.environ['BUILD_BUILDNUMBER'])
     else:
         components.append('dont-use-me-dev-build')
     components.append(platform())
