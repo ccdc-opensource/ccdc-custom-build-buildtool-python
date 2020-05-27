@@ -118,6 +118,7 @@ def install_packages():
         'dmgbuild', # To build pretty dmgs
         'argcomplete', # autocompletion for proper shells
         'colorama', # pretty colours
+        'distro', # replacement for deprecated platform.linux_distribution()
     ]
     if windows():
         python_interpreter = python_version_destdir() / 'python.exe'
