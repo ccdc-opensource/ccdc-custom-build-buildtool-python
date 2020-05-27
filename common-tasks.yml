@@ -21,9 +21,7 @@ steps:
         aggregate: true
         aggregationStatus: RELEASED
     buildName: '$(Build.DefinitionName)'
-    buildNumber: '$(Build.BuildNumber)'
-  # env:
-  #   JFROG_CLI_TEMP_DIR: '$(Build.ArtifactStagingDirectory)'
+    buildNumber: '$(Build.BuildNumber)-$(artifactory.platformName)'
   displayName: 'Collect issues'
 
 # Upload artifactory build info
@@ -47,8 +45,6 @@ steps:
     module: 'bt_python/$(artifactory.platformName)'
     includeEnvVars: true
     failNoOp: true
-  # env:
-  #   JFROG_CLI_TEMP_DIR: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Upload distribution to artifactory'
 
 - task: ArtifactoryPublishBuildInfo@1
@@ -57,6 +53,4 @@ steps:
     buildName: '$(Build.DefinitionName)'
     buildNumber: '$(Build.BuildNumber)-$(artifactory.platformName)'
     excludeEnvVars: '*password*;*secret*;*key*;*token*'
-  # env:
-  #   JFROG_CLI_TEMP_DIR: '$(Build.ArtifactStagingDirectory)'
   displayName: 'Publish build'
