@@ -42,8 +42,8 @@ def output_base_name():
         package_name,
         python_version,
     ]
-    if 'BUILD_BUILDID' in os.environ:
-        components.append(os.environ['BUILD_BUILDID'])
+    if 'BUILD_BUILDNUMBER' in os.environ:
+        components.append(os.environ['BUILD_BUILDNUMBER'])
     else:
         components.append('dont-use-me-dev-build')
     components.append(platform())
@@ -118,6 +118,7 @@ def install_packages():
         'dmgbuild', # To build pretty dmgs
         'argcomplete', # autocompletion for proper shells
         'colorama', # pretty colours
+        'distro', # replacement for deprecated platform.linux_distribution()
     ]
     if windows():
         python_interpreter = python_version_destdir() / 'python.exe'
