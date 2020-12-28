@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 
 package_name = 'bt_python'
-python_version = '3.8.2'
+python_version = '3.9.1'
 macos_deployment_target = '10.12'
 
 def macos():
@@ -118,7 +118,9 @@ def install_packages():
         'dmgbuild', # To build pretty dmgs
         'argcomplete', # autocompletion for proper shells
         'colorama', # pretty colours
+        'blessings', # pretty colours
         'distro', # replacement for deprecated platform.linux_distribution()
+        'pytest', # just test it
     ]
     if windows():
         python_interpreter = python_version_destdir() / 'python.exe'
