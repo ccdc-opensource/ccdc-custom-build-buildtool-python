@@ -78,6 +78,7 @@ def install_from_msi():
 
 def install_prerequisites():
     if macos():
+        subprocess.run(['brew', 'update'], check=True)
         subprocess.run(['brew', 'install', 'openssl', 'readline', 'sqlite3', 'xz', 'zlib'], check=True)
     if linux():
         if centos():
