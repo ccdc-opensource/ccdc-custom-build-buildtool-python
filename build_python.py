@@ -122,6 +122,7 @@ def install_packages():
         'blessings', # pretty colours
         'distro', # replacement for deprecated platform.linux_distribution()
         'pytest', # just test it
+        'pytest-xdist', # and allow for parallelisation
     ]
     if windows():
         python_interpreter = python_version_destdir() / 'python.exe'
