@@ -7,7 +7,7 @@ from platform import processor
 from pathlib import Path
 
 package_name = 'bt_python'
-python_version = '3.9.12'
+python_version = '3.9.11'
 macos_deployment_target = '10.15'
 
 def macos():
@@ -125,8 +125,15 @@ def install_packages():
         'colorama', # pretty colours
         'blessings', # pretty colours
         'distro', # replacement for deprecated platform.linux_distribution()
+        'anyio', # better async
+        'asyncclick', # better CLI
         'pytest', # just test it
         'pytest-xdist', # and allow for parallelisation
+        'pytest_cov', # coverage
+        'pytest-asyncio', # deal with async
+        'mock', # help testing
+        'black', # source code should look good
+        'yamllint', # yaml files too
     ]
     if windows():
         python_interpreter = python_version_destdir() / 'python.exe'
