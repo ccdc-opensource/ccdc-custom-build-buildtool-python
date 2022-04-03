@@ -3,11 +3,12 @@ import shutil
 import subprocess
 import sys
 import os
+from platform import processor
 from pathlib import Path
 
 package_name = 'bt_python'
-python_version = '3.9.1'
-macos_deployment_target = '10.12'
+python_version = '3.10.3'
+macos_deployment_target = '10.15'
 
 def macos():
     return sys.platform == 'darwin'
@@ -35,6 +36,9 @@ def platform():
         else:
             version = subprocess.check_output('lsb_release -r -s', shell=True).decode('utf-8').strip()
             return f'ubuntu{version}'
+    if macos():
+        if processor() == 'arm':
+            return 'darwin-arm'
     return sys.platform
 
 def output_base_name():
