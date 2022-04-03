@@ -7,7 +7,7 @@ from platform import processor
 from pathlib import Path
 
 package_name = 'bt_python'
-python_version = '3.10.3'
+python_version = '3.9.12'
 macos_deployment_target = '10.15'
 
 def macos():
