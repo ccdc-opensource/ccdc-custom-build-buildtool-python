@@ -10,11 +10,11 @@ jobs:
       # No need to setup specific python, the container's python3 will be used
       - template: common-tasks.yml
 
-  - job: Ubuntu1804
+  - job: Ubuntu2004
     pool:
-      vmImage: "ubuntu-18.04"
+      vmImage: "ubuntu-20.04"
     variables:
-      artifactory.platformName: "ubuntu18.04"
+      artifactory.platformName: "ubuntu20.04"
     steps:
       - task: UsePythonVersion@0
         inputs:
